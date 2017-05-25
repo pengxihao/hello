@@ -1,0 +1,202 @@
+<html>
+  <head>
+    <title>松崎视力增进法辅助工具</title>
+    <meta charset='utf-8'>
+    <style>
+    * {font-family: 'Microsoft YaHei', Arial, Helvetica, sans-serif; font-size: 12px;}
+    body {height:100%; margin:0px; padding: 0px; overflow:hidden;}
+    html {height:100%;}
+    #methods {border: 10px solid #666; width:297mm; height:150mm; margin:0 auto; padding:10px;}
+    #a4 {width:297mm; height:210mm; margin:0 auto; position:relative; display:none;}
+    #tips {position:absolute; display:none; text-align:center; width:100%;}
+    #time {position:absolute; color:red; display:none;}
+    .circle {border-radius:50%; background:#000; position:absolute; width:0.8cm; height:0.8cm;}
+    .start {text-align: center;border-bottom: 1px solid black; padding: 10px;}
+    .start select,button {height: 25px;}
+    </style>
+  </head>
+  <body id='body' flag='#fff'>
+    <div id='methods'>
+        <div id='method1'>
+            <dt><h3>明暗训练法</h3></dt>
+            <dd>A. 下面是对我们的眼睛进行基础的光感练习，希望大家都能按照图中步骤练习，闭上眼睛，人眼距离荧光灯在15——20cm；</dd>
+            <dd>B. 眼睛要保持微微闭合的状态，用心感受几秒钟这种光亮的感觉，心里默默从1数到4即可，这是训练对明环境的感受；</dd>
+            <dd>C. 当保持这种状态4秒钟后，关闭荧光灯的电源，依然保持状态不变，同样持续4秒钟的时间，这是对暗环境的感受；</dd>
+            <dd>D. 经历前面几个过程之后，我们重新打开荧光灯电源，并且继续重复前面的步骤，一共进行10次这样的练习；</dd>
+            <div class="start">
+                <span>明暗交替时长: </span>&nbsp;
+                <select>
+                    <option value="4">4 秒</option>
+                    <option value="3">3 秒</option>
+                    <option value="2">2 秒</option>
+                    <option value="1">1 秒</option>
+                </select>&nbsp;
+                <button>开始 或 按B开始</button>
+            </div>
+        </div>
+        <br><br>
+        <div id='method2'>
+            <dt><h3>方向 • 远近训练法</h3></dt>
+            <dd>A. 将打好的练习纸垂直放置在眼睛正前方5cm位置，要让h这个点处在我们的水平视线中间；</dd>
+            <dd>B. 而我们的眼睛也要一直保持这种垂直于训练之的样子，并且训练的时候头一定不要移动，全都是靠眼睛自己转来转去来完成训练的；</dd>
+            <dd>C. 首先我们从点a开始凝视，凝视几秒钟后转向下一个点，记住是眼睛转向哦，头不要动，就这样一直看到o这个点；</dd>
+            <dd>D. 后面分别以 二、三、四、五个点为一组分别进行凝视，直到最后一直到完成所有的点；</dd>
+            <div class="start">
+                <span>凝视切换时长: </span>&nbsp;
+                <select>
+                    <option value="5.3">5.3 秒</option>
+                    <option value="5">5 秒</option>
+                    <option value="3">3 秒</option>
+                    <option value="2">2 秒</option>
+                    <option value="1">1 秒</option>
+                </select>&nbsp;
+                <button>开始 或 按D开始</button>
+            </div>
+        </div>
+        <br><br>
+        <p>
+            一定要适度练习，不可操之过急，我最初知道这个练习法之后就因为太急切看到效果，结果头一天看的眼疼；<br>
+            还有对光感练习，一定要使用荧光灯，而且最好是能调节明暗的，可以根据自己的感觉调整好亮度；<br>
+            快捷键: 按 <b>F11</b> 进入全屏模式； 按 <b>F5</b> 刷新进入配置页面；
+            按 <b>B</b> 进入[明暗训练法]； 按 <b>D</b> 进入[方向 • 远近训练法]；
+            <br><br>
+            请使用最新的chrome浏览器打开本网页, 不保证其他浏览器兼容!
+        </p>
+    </div>
+    <div id='a4'>
+        <div id='tips'></div>
+        <div id='time'></div>
+    </div>
+  </body>
+</html>
+<script type="text/javascript">
+/*jshint esversion: 6*/
+const A4_WIDTH  = 297; // mm
+const A4_HEIGHT = 210; // mm
+const POINTS    = 'abcdefghijklmno';
+const $         = (e) => document.querySelector(e);
+const $body     = $('#body');
+const $time     = $('#time');
+function init_points() {
+    if (init_points.inited) {
+        return POINTS.split('').map(e => $('#'+e).style.display = 'block');
+    }
+    init_points.inited = 1;
+    let point = function(id, top, left) {
+        let div           = document.createElement('div');
+        div.id            = id;
+        div.style.top     = top+'mm';
+        div.style.left    = left+'mm';
+        div.className     = 'circle';
+        $('#a4').appendChild(div);
+    };
+    // 普通A4纸(297X210)。或长30宽20的纸板。 5×3排列。
+    let ids = POINTS.split('');
+    for(let index = 0, r = 0; r < 3; r++) { // row
+        for(let c = 0; c < 5; c++) {        // column
+            // 第一行距上2厘米，每点左右间距6.6厘米，上下间距7厘米。
+            // 第三行距下4厘米。点的直径0.8厘米。
+            point(ids[index++], 20-0.4+r*70, (A4_WIDTH-66*4-8)/2+c*66);
+        }
+    }
+    $('#h').style.border = '1px solid red';
+}
+// 用背景点亮屏幕, 模拟明暗环境
+function do_light(delay, callback){
+    if (do_light.doing) return;
+    do_light.doing = 1;
+    let times     = 0;
+    let switch_bg = function() {
+        let flag = $body.getAttribute('flag');
+        $body.setAttribute('flag', flag === '#000' ? '#fff' : '#000');
+        $body.style.backgroundColor = flag;
+        if (times++ >= 41) {
+            clearInterval(do_light.interval);
+            $body.style.backgroundColor = '#fff';
+            $body.setAttribute('flag', '#fff');
+            do_light.doing = 0;
+            (callback || function(){})();
+        }
+    };
+    do_light.interval = setInterval(switch_bg() || switch_bg, delay);
+}
+// 切换显示15个点, 模拟15点纸
+function do_points(delay, callback) {
+    if (do_points.doing) return;
+    do_points.doing = 1;
+    let lighted = [];
+    for(let rows = POINTS.match(/.{5}/g), s = 1; s <= 5; s++) {
+        /*jshint loopfunc:true */
+        rows.forEach(row => {
+            let reg = new RegExp('(?=(.{'+s+'})).');
+            lighted.push(...row.split(reg).filter(v => v.length === s));
+        });
+    }
+    let index    = 0;
+    let circles  = document.querySelectorAll('.circle');
+    let switch_points = function() {
+        Array.prototype.map.call(circles, e => e.style.display='none');
+        let points = lighted[index++];
+        if (!points) {
+            clearInterval(do_points.interval);
+            do_points.doing = 0;
+            (callback || function(){})();
+        }
+        for(let x in points) {
+            $('#'+points[x]).style.display = '';
+        }
+    };
+    do_points.interval = setInterval(switch_points, delay);
+}
+// 显示模拟的A4纸
+function switch_a4(show) {
+    // A4纸张规格 210mmx297mm打横
+    $('#a4').style.height  = A4_HEIGHT +'mm';
+    $('#a4').style.width   = A4_WIDTH  +'mm';
+    show = typeof show === 'undefined' ? 1 : show; // 默认show
+    $('#a4').style.display      = show ? 'block' : 'none';
+    $('#methods').style.display = show ? 'none'  : 'block';
+}
+// 显示模拟的A4纸
+function switch_tips(show, text) {
+    let $tips = $('#tips');
+    show = typeof show === 'undefined' ? 1 : show; // 默认show
+    $tips.style.top     = (A4_HEIGHT/2-6)+'mm';
+    $tips.innerHTML     = text || '';
+    $tips.style.display = show ? 'block' : 'none';
+}
+// 明暗训练法
+$('#method1 button').addEventListener('click', function() {
+    if (do_light.doing || do_points.doing) return;
+    let delay = $('#method1 select').value;
+    switch_a4(1);
+    do_light(delay*1000, () => switch_a4(0));
+    let tips = '距离屏幕15-20cm, 可视情况调整，原则上，以闭上眼睛能感觉到微微刺眼为标准';
+    switch_tips(1, tips);
+    setTimeout(()=>switch_tips(0), 3000);
+});
+// 方向 • 远近训练法
+$('#method2 button').addEventListener('click', function() {
+    if (do_light.doing || do_points.doing) return;
+    let delay = $('#method2 select').value;
+    switch_a4(1);
+    init_points();
+    do_points(delay*1000, () => switch_a4(0));
+    let tips = '垂直正前方5cm位置，要让最中间⇧这个点(h)处在我们的水平视线中间';
+    switch_tips(1, tips);
+    setTimeout(()=>switch_tips(0), 3000);
+});
+// 绑定快捷键
+document.addEventListener('keyup', function(e) {
+    switch(e.keyCode) {
+        case 66: return $('#method1 button').click(); // b
+        case 68: return $('#method2 button').click(); // d
+        case 84: // t
+            let none = $time.style.display === 'none';
+            return ($time.style.display = none ? 'block' : 'none');
+    }
+});
+setInterval(function(){
+    $time.innerHTML = new Date().toLocaleString();
+}, 1000);
+</script>
